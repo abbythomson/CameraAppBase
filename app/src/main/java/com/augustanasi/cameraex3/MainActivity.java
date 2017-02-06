@@ -84,7 +84,9 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
             public void onPictureTaken(byte[] data, Camera camera) {
                 FileOutputStream outputStream;
 
-                File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "AppPics");
+                String state = Environment.getExternalStorageState();
+                File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"AppPics");
+
                 File image = new File(storageDir, "image.png");
 
 
@@ -106,8 +108,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     private void captureImage(){
         camera.takePicture(shutterCallback, rawCallback,pngCallback);
-        stopCamera();
-        startCamera();
+        //stopCamera();
+        //startCamera();
     }
     private void startCamera(){
         if(Camera.getNumberOfCameras()>0){
