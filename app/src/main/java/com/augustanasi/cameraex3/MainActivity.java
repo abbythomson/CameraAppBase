@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     Camera.PictureCallback pngCallback;
     Context context;
 
-    private String dir;
-
     private final String tag = "MainActivity";
 
     @Override
@@ -97,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 File image = new File(storageDir, "image.png");
                 Log.d("Location","Image - "+image.exists());
 
-
                 try{
                     outputStream = new FileOutputStream(image);
                     outputStream.write(data);
@@ -110,14 +107,14 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 } finally {
                 }
                 Log.d("Log", "onPictureTaken - png");
+                camera.stopPreview();
+                camera.startPreview();
             }
         };
     }
 
     private void captureImage(){
         camera.takePicture(shutterCallback, rawCallback,pngCallback);
-       // stopCamera();
-       // startCamera();
     }
     private void startCamera(){
         if(Camera.getNumberOfCameras()>0){
@@ -134,9 +131,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         Camera.Parameters param;
         param = camera.getParameters();
 
-        param.setRotation(180);
         param.setPreviewFrameRate(40);
-        param.setPreviewSize(surfaceView.getHeight(),surfaceView.getWidth());
+        param.setPreviewSize(surfaceView.getWidth(),surfaceView.getHeight());
         camera.setParameters(param);
         //Camera.CameraInfo info = Camera.getCameraInfo();
         //camera.setDisplayOrientation((info.orientation+90%360);
