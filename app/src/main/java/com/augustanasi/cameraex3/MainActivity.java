@@ -2,6 +2,7 @@ package com.augustanasi.cameraex3;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.GradientDrawable;
 import android.hardware.Camera;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -82,12 +83,19 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         pngCallback = new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
+                Log.d("HERE","HERE");
                 FileOutputStream outputStream;
 
                 String state = Environment.getExternalStorageState();
-                File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"AppPics");
-
+                Log.d("State", "State - "+state);
+                File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "AugustanaRobotImgs");
+                if(!storageDir.exists()){
+                    storageDir.mkdir();
+                }
+                Log.d("LOCATION","Storage Location: "+storageDir.exists());
+                Log.d("LOCATION","Storage Location: "+storageDir.toString());
                 File image = new File(storageDir, "image.png");
+                Log.d("Location","Image - "+image.exists());
 
 
                 try{
@@ -108,8 +116,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     private void captureImage(){
         camera.takePicture(shutterCallback, rawCallback,pngCallback);
-        //stopCamera();
-        //startCamera();
+       // stopCamera();
+       // startCamera();
     }
     private void startCamera(){
         if(Camera.getNumberOfCameras()>0){
@@ -126,9 +134,13 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         Camera.Parameters param;
         param = camera.getParameters();
 
+        param.setRotation(180);
         param.setPreviewFrameRate(40);
-        param.setPreviewSize(surfaceView.getWidth(),surfaceView.getHeight());
+        param.setPreviewSize(surfaceView.getHeight(),surfaceView.getWidth());
         camera.setParameters(param);
+        //Camera.CameraInfo info = Camera.getCameraInfo();
+        //camera.setDisplayOrientation((info.orientation+90%360);
+        camera.setDisplayOrientation(90);
 
         try{
             camera.setPreviewDisplay(surfaceHolder);
